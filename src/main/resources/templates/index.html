@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body >
+    <h1>Calorie Tracking App</h1>
+
+    <form action="#" th:action="@{/showFood}" method="post" th:object="${query}" >
+        <label for="queryString">Food Consumed</label>
+        <br>
+        <input type="text" th:field="*{queryString}" placeholder="5 apples or 200g beef" required />
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Show Food</h1>
+    <ul th:each="foodData:${foodList}">
+        <li th:object=${foodData} >
+            <span th:text="*{name}"></span>
+            <ul>
+                <li th:text="*{weight}"></li>
+                <li th:text="*{calories}"></li>
+                <li th:text="*{protein}"></li>
+                <li th:text="*{carbs}"></li>
+            </ul>
+        </li>
+
+    </ul>
+    <form method="GET" action="/">
+        <button type="submit">Back</button>
+      </form>
+</body>
+</html>
