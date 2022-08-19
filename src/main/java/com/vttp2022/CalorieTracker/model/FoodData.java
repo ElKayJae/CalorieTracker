@@ -18,6 +18,15 @@ public class FoodData {
     private BigDecimal calories;
     private BigDecimal protein;
     private BigDecimal carbs;
+    private boolean save=false;
+
+    public boolean isSave() {
+        return save;
+    }
+    public void setSave(boolean save) {
+        this.save = save;
+    }
+
     private static ArrayList<FoodData> foodList = new ArrayList<>();
 
     public static ArrayList<FoodData> getFoodList() {

@@ -14,8 +14,8 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
-public class FoodList {
-    private static final Logger logger = LoggerFactory.getLogger(FoodList.class);
+public class FoodListObj {
+    private static final Logger logger = LoggerFactory.getLogger(FoodListObj.class);
 
     private List<FoodData> foodList = new ArrayList<>();
 
@@ -39,9 +39,9 @@ public class FoodList {
     }
 
 
-    public static FoodList createJson(String json) throws IOException {
+    public static FoodListObj createJson(String json) throws IOException {
         logger.info("createJson foodList");
-        FoodList foodList = new FoodList();
+        FoodListObj foodList = new FoodListObj();
         try (InputStream is = new ByteArrayInputStream(json.getBytes())){
             JsonReader r = Json.createReader(is);
             JsonObject jsonItem = r.readObject();

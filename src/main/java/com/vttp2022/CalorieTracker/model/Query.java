@@ -19,9 +19,5 @@ public class Query {
         this.queryString = queryString;
     }
 
-    // public static Query createJson(JsonObject o){
-    //     Query q = new Query();
-    //     String input = o.getString("query");
-    //     return q;
-    // }
+
 }

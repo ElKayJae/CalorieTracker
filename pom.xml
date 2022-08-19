@@ -15,6 +15,8 @@
 	<description>Calorie tracking app</description>
 	<properties>
 		<java.version>18</java.version>
+			<webjars-locator.version>0.30</webjars-locator.version>
+        <font-awesome.version>5.11.2</font-awesome.version>
 	</properties>
 	<dependencies>
 		<dependency>

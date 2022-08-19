@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,17 +13,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.vttp2022.CalorieTracker.model.FoodList;
+import com.vttp2022.CalorieTracker.model.FoodListObj;
 import com.vttp2022.CalorieTracker.model.Query;
 
 @Service
 public class CalorieTrackerService {
     private static final Logger logger = LoggerFactory.getLogger(CalorieTrackerService.class);
 
+    @Value ("${calorie.ninja.apikey}")
+    String apiKey;
+
+
     private static final String URL = "https://api.calorieninjas.com/v1/nutrition";
 
-    public Optional<FoodList> getFoodList(Query q){
-        String apiKey = System.getenv("CALORIE_NINJA_API_KEY");
+    public Optional<FoodListObj> getFoodList(Query q){
+        // String apiKey = System.getenv("CALORIE_NINJA_API_KEY");
 
         String requestUrl = UriComponentsBuilder.fromUriString(URL)
                             .queryParam("query", q.getQueryString())
@@ -44,7 +49,7 @@ public class CalorieTrackerService {
                                     request, 
                                     String.class,
                                     1);
-            FoodList foodList = FoodList.createJson(resp.getBody());
+            FoodListObj foodList = FoodListObj.createJson(resp.getBody());
             logger.info("response body >>>>>>>>> " + resp.getBody());
             return Optional.of(foodList);
         } catch (Exception e) {
