@@ -18,13 +18,13 @@ public class FoodData {
     private BigDecimal calories;
     private BigDecimal protein;
     private BigDecimal carbs;
-    private boolean save=false;
+    private boolean checked=false;
 
-    public boolean isSave() {
-        return save;
+    public boolean isChecked() {
+        return checked;
     }
-    public void setSave(boolean save) {
-        this.save = save;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     private static ArrayList<FoodData> foodList = new ArrayList<>();

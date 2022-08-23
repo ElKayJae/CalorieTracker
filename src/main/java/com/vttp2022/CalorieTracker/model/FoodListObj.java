@@ -8,16 +8,19 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
+@Component("foodListObj")
 public class FoodListObj {
     private static final Logger logger = LoggerFactory.getLogger(FoodListObj.class);
 
     private List<FoodData> foodList = new ArrayList<>();
+    
 
     public List<FoodData> getFoodList() {
         return foodList;

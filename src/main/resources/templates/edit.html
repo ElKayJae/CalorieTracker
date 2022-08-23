@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body >
+    <nav class="navbar navbar-dark bg-dark text-white px-3">
+        <div class="container-fluid">
+            <h4 class="h6 m-0" th:text="${currUser.username}"></h4>
+            <span th:object="${dayObj}">
+                <input type="hidden" th:field="*{day}"></input>
+                <div class="nav-item dropdown">
+                    <span class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
+                    <span th:object="${currUser}">
+                        <ul class="dropdown-menu"  >
+                            <li th:each=" entry : *{dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
+                        </ul>
+                    </span>
+                </div>
+            </span>
+            <a href="/" class="text-decoration-none text-white h6 m-0"> Logout </a>
+        </div>
+      </nav>
+
+    <div class="container ">
+        <h4 class="m-3">Calorie Tracking App</h4>
+        
+        <div class="card col bg-light m-3 py-3 px-5">
+            <form action="#" th:action="@{/showFood}" method="post" >
+                <label for="queryString" class="form-label fs-5 p-1">Food Consumed</label>
+                <input class="form-control mb-3" type="text" th:name="queryString" placeholder="5 apples or 200g beef" required />
+                <p class="fs-6">*Note: if weight is not entered, default is 100g</p>
+
+
+                <div class="row justify-content-between mb-3 align-items-end">
+                    <div class="col" th:object="${dayObj}">
+                            <label class="form-label p-1 fs-5" for="date">Date</label>
+                            <input type="date" class="form-control" id="date" autocomplete="off" th:field="*{day}" required/> 
+                    </div>
+                    <div class="col-lg col-md-12 align-items-end mt-3">
+                        <div class="d-grid ">
+                            <button class="btn btn-dark " type="submit">Search</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+
+        <!-- Food List of Selected Day -->
+
+        <form action="#" th:action="@{/del}" method="post" th:object="${foodListObj}">
+            <div class="m-3 card" th:if="${foodListObj!='emptyList'}"   >
+                <div class="card-header d-flex justify-content-between" >
+                    <p class="form-label fs-5 text-capitalize mx-3 mt-1"th:text="'Date: ' + ${dayObj.day}"></p>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-warning mx-3" type="submit">Delete</button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <dd class="col-lg-4 col-md-6 d-flex justify-content-between px-5 "  th:each="foodData, stat :*{foodList}">
+                            <span class="text-capitalize" th:text="${foodData.name}"></span> 
+                            <span  th:text="${foodData.calories} +' kcal'"></span>
+                            <input class="form-check-input" type="checkbox" th:field="*{foodList[__${stat.index}__].checked}">
+                                    
+                        </dd>                    
+                    </div>
+                </div>
+                <div class="card-footer ">
+                 
+      
+                 
+                    <p class="mx-3 fs-5 my-0"> Total Calories: </p>
+                </div>
+            </div>
+        </form>
+
+        <!-- list of recorded days -->
+
+  
+            <div class="card-header d-flex flex-wrap m-3 justify-content-evenly" th:object="${currUser}" >
+                <div th:each=" entry : *{dayMap}">
+                    <a th:href="@{'/selectDay/'+${entry.key}}" class="mb-3 me-2 card text-decoration-none" >
+                        <button class="btn btn-light p-3" type="button" th:text="${entry.key}"></button>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

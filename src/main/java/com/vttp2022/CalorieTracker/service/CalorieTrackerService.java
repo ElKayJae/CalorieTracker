@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.vttp2022.CalorieTracker.model.FoodListObj;
-import com.vttp2022.CalorieTracker.model.Query;
 
 @Service
 public class CalorieTrackerService {
@@ -26,11 +25,11 @@ public class CalorieTrackerService {
 
     private static final String URL = "https://api.calorieninjas.com/v1/nutrition";
 
-    public Optional<FoodListObj> getFoodList(Query q){
+    public Optional<FoodListObj> getFoodList(String q){
         // String apiKey = System.getenv("CALORIE_NINJA_API_KEY");
 
         String requestUrl = UriComponentsBuilder.fromUriString(URL)
-                            .queryParam("query", q.getQueryString())
+                            .queryParam("query", q)
                             .toUriString()
                             .replace("%20", " ");
                             

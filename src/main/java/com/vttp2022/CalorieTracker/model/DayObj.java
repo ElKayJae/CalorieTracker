@@ -2,21 +2,29 @@ package com.vttp2022.CalorieTracker.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 @Component("dayObj")
 public class DayObj {
     public String day;
-    public List<FoodData> dailyFood = new ArrayList<>();
+    public FoodListObj dailyFood ;
     
-
-    public String getDay() {
+    public DayObj(){
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.day = localDate.format(formatter);
+    }
+
+    public FoodListObj getDailyFood() {
+        return dailyFood;
+    }
+
+    public void setDailyFood(FoodListObj dailyFood) {
+        this.dailyFood = dailyFood;
+    }
+
+    public String getDay() {
         return day;
     }
 
