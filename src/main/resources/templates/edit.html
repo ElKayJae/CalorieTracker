@@ -10,11 +10,11 @@
 <body >
     <nav class="navbar navbar-dark bg-dark text-white px-3">
         <div class="container-fluid">
-            <h4 class="h6 m-0" th:text="${currUser.username}"></h4>
-            <span th:object="${dayObj}">
+            <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
+            <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
                 <input type="hidden" th:field="*{day}"></input>
                 <div class="nav-item dropdown">
-                    <span class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
+                    <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
                     <span th:object="${currUser}">
                         <ul class="dropdown-menu"  >
                             <li th:each=" entry : *{dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
@@ -22,7 +22,7 @@
                     </span>
                 </div>
             </span>
-            <a href="/" class="text-decoration-none text-white h6 m-0"> Logout </a>
+            <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
         </div>
       </nav>
 
@@ -56,19 +56,21 @@
         <form action="#" th:action="@{/del}" method="post" th:object="${foodListObj}">
             <div class="m-3 card" th:if="${foodListObj!='emptyList'}"   >
                 <div class="card-header d-flex justify-content-between" >
-                    <p class="form-label fs-5 text-capitalize mx-3 mt-1"th:text="'Date: ' + ${dayObj.day}"></p>
-                    <div class="d-flex align-items-center">
-                        <button class="btn btn-danger mx-3" name="delAll" type="submit">Delete All</button>
-                        <button class="btn btn-warning mx-3" name="delSelected" type="submit">Delete</button>
-                    </div>
+                    <!-- <p class="form-label fs-5 text-capitalize mx-3 mt-1"th:text="'Date: ' + ${dayObj.day}"></p>
+                    <div class="d-flex align-items-center"> -->
+                        <button class="btn btn-danger mx-3  mt-1" name="delAll" type="submit">Delete All</button>
+                        <button class="btn btn-warning mx-3  mt-1" name="delSelected" type="submit">Delete</button>
+                    <!-- </div> -->
                 </div>
 
                 <div class="card-body">
                     <div class="row">
                         <dd class="col-lg-4 col-md-6 d-flex justify-content-between px-5 "  th:each="foodData, stat :*{foodList}">
-                            <span class="text-capitalize" th:text="${foodData.name}"></span> 
+                            <span class="d-flex mx-0 p-0">
+                                <input class="form-check-input me-2" type="checkbox" th:field="*{foodList[__${stat.index}__].checked}">
+                                <span class="text-capitalize" th:text="${foodData.name}"></span> 
+                            </span>
                             <span  th:text="${foodData.calories} +' kcal'"></span>
-                            <input class="form-check-input" type="checkbox" th:field="*{foodList[__${stat.index}__].checked}">
                                     
                         </dd>                    
                     </div>
@@ -77,7 +79,7 @@
                  
       
                  
-                    <p class="mx-3 fs-5 my-0" th:text="'Total Calories: '+ ${foodListObj.totalCalories}"> </p>
+                    <p class="mx-3 fs-5 my-0" th:text="'Total Calories: '+ ${foodListObj.totalCalories} + ' kcal' "> </p>
                 </div>
             </div>
         </form>

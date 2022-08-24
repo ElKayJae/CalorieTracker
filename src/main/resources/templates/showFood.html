@@ -5,17 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Nutrition List</title>
+    <title>Calorie Tracker</title>
 </head>
 <body>
     <form method="POST" th:action="@{/add}" th:object="${foodListObj}">
         <nav class="navbar navbar-dark bg-dark text-white px-3">
             <div class="container-fluid">
-                <h4 class="h6 m-0" th:text="${currUser.username}"></h4>
-                <span th:object="${dayObj}">
+                <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
+                <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
                     <input type="hidden" th:field="*{day}"></input>
                     <div class="nav-item dropdown">
-                        <span class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
+                        <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
                         <span th:object="${currUser}">
                             <ul class="dropdown-menu"  >
                                 <li th:each=" entry : *{dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
@@ -23,7 +23,7 @@
                         </span>
                     </div>
                 </span>
-                <a href="/" class="text-decoration-none text-white h6 m-0"> Logout </a>
+                <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
             </div>
           </nav>
 

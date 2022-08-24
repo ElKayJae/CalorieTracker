@@ -11,11 +11,11 @@
     <!-- Nav Bar -->
     <nav class="navbar navbar-dark bg-dark text-white px-3">
         <div class="container-fluid">
-            <h4 class="h6 m-0" th:text="${currUser.username}"></h4>
-            <span th:object="${dayObj}">
+            <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
+            <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
                 <input type="hidden" th:field="*{day}"></input>
                 <div class="nav-item dropdown">
-                    <span class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
+                    <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
                     <span th:object="${currUser}">
                         <ul class="dropdown-menu"  >
                             <li th:each=" entry : *{dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
@@ -23,7 +23,7 @@
                     </span>
                 </div>
             </span>
-            <a href="/" class="text-decoration-none text-white h6 m-0"> Logout </a>
+            <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
         </div>
       </nav>
 
@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="card-footer ">
-                    <p class="mx-3 fs-5 my-0" th:text="'Total Calories: '+ ${foodListObj.totalCalories}"> </p>
+                    <p class="mx-3 fs-5 my-0" th:text="'Total Calories: '+ ${foodListObj.totalCalories} + ' kcal' "> </p>
                 </div>
             </div>
         </form>
