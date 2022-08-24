@@ -31,6 +31,12 @@ public class DayObj {
     public void setDay(String day) {
         this.day = day;
     }
+    
+    public void newDay(){
+        LocalDate localDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.day = localDate.format(formatter);
+    }
 
     
 }

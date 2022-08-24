@@ -33,5 +33,9 @@ public class User {
     public void addDay(DayObj dayObj){
         dayMap.put(dayObj.day, dayObj);
     }
+
+    public void delDay(DayObj dayObj){
+        dayMap.remove(dayObj.day);
+    }
     
 }

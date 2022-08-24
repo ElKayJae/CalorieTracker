@@ -128,11 +128,21 @@ public class TrackerController {
                 counter--;
             }
         }
+
         dayObj.setDay(currDay);
-        dayObj.setDailyFood(currDayListObj);
-        currUser.addDay(dayObj);
-        redisService.save(currUser);
         
+        if(currDayListObj.getFoodList().size()==0){
+            currUser.delDay(dayObj);
+            dayObj.newDay();
+            currDayListObj=currUser.getDayMap().get(dayObj.day).getDailyFood();
+            currDay = dayObj.getDay();
+            logger.info("list size" + currDayListObj.getFoodList().size());
+        } else {
+            dayObj.setDailyFood(currDayListObj);
+            currUser.addDay(dayObj);
+        }
+        redisService.save(currUser);
+        logger.info("del day >>>>>>>>>" + dayObj.day);
         model.addAttribute("currUser", currUser);
         model.addAttribute("foodListObj", currDayListObj);
         model.addAttribute("dayObj", dayObj);
