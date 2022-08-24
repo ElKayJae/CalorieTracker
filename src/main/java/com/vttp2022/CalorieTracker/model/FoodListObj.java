@@ -3,6 +3,8 @@ package com.vttp2022.CalorieTracker.model;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,22 @@ public class FoodListObj {
     private static final Logger logger = LoggerFactory.getLogger(FoodListObj.class);
 
     private List<FoodData> foodList = new ArrayList<>();
+    private BigDecimal totalCalories;
     
+
+    public BigDecimal getTotalCalories() {
+        double total = 0;
+        for (FoodData food:foodList){
+            total+=food.getCalories().doubleValue();
+        }
+        totalCalories = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
+        logger.info(totalCalories.toString());
+        return totalCalories;
+    }
+
+    public void setTotalCalories(BigDecimal totalCalories) {
+        this.totalCalories = totalCalories;
+    }
 
     public List<FoodData> getFoodList() {
         return foodList;
@@ -59,4 +76,5 @@ public class FoodListObj {
             return foodList;
         }
     }
+    
 }

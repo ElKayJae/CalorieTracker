@@ -10,7 +10,7 @@ public class User {
     String username;
     String password;
     Map<String,DayObj> dayMap = new HashMap<>();
-    
+
     public Map<String, DayObj> getDayMap() {
         return dayMap;
     }
@@ -38,4 +38,5 @@ public class User {
         dayMap.remove(dayObj.day);
     }
     
+
 }

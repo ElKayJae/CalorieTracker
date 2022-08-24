@@ -28,8 +28,7 @@
       </nav>
 
       <!-- body -->
-    <div class="container ">
-        <h4 class="m-3">Calorie Tracking App</h4>
+    <div class="container mt-4 ">
         
         <div class="card col bg-light m-3 py-3 px-5">
             <form action="#" th:action="@{/showFood}" method="post" >
@@ -74,7 +73,7 @@
                     </div>
                 </div>
                 <div class="card-footer ">
-                    <p class="mx-3 fs-5 my-0"> Total Calories: </p>
+                    <p class="mx-3 fs-5 my-0" th:text="'Total Calories: '+ ${foodListObj.totalCalories}"> </p>
                 </div>
             </div>
         </form>
@@ -89,7 +88,7 @@
                 </a>
             </div>
         </div>
-    
+        
             
         
     </div>

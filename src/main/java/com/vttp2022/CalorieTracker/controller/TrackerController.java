@@ -1,8 +1,6 @@
 package com.vttp2022.CalorieTracker.controller;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -117,7 +115,7 @@ public class TrackerController {
         return "main";
     }
 
-    @PostMapping("/del")
+    @PostMapping(value = "/del", params = "delSelected")
     public String delete(@ModelAttribute FoodListObj foodListObj, @ModelAttribute DayObj dayObj, Model model){
 
         int counter=0;
@@ -134,13 +132,43 @@ public class TrackerController {
         if(currDayListObj.getFoodList().size()==0){
             currUser.delDay(dayObj);
             dayObj.newDay();
-            currDayListObj=currUser.getDayMap().get(dayObj.day).getDailyFood();
+            if(currUser.getDayMap().containsKey(dayObj.day)){
+                currDayListObj=currUser.getDayMap().get(dayObj.day).getDailyFood();
+            } else {
+                currDayListObj = new FoodListObj();
+            }
             currDay = dayObj.getDay();
             logger.info("list size" + currDayListObj.getFoodList().size());
         } else {
             dayObj.setDailyFood(currDayListObj);
             currUser.addDay(dayObj);
         }
+        redisService.save(currUser);
+        logger.info("del day >>>>>>>>>" + dayObj.day);
+        model.addAttribute("currUser", currUser);
+        model.addAttribute("foodListObj", currDayListObj);
+        model.addAttribute("dayObj", dayObj);
+        
+        return "main";
+    }
+    
+    @PostMapping(value = "/del", params = "delAll")
+    public String deleteAll(@ModelAttribute FoodListObj foodListObj, @ModelAttribute DayObj dayObj, Model model){
+
+
+        dayObj.setDay(currDay);
+        currUser.delDay(dayObj);
+        dayObj.newDay();
+        
+
+        if (currUser.getDayMap().containsKey(dayObj.day)){
+                currDayListObj=currUser.getDayMap().get(dayObj.day).getDailyFood();
+            } else {
+                currDayListObj = new FoodListObj();
+            }
+        currDay = dayObj.getDay();
+        logger.info("list size" + currDayListObj.getFoodList().size());
+
         redisService.save(currUser);
         logger.info("del day >>>>>>>>>" + dayObj.day);
         model.addAttribute("currUser", currUser);
