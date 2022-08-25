@@ -1,6 +1,7 @@
 package com.vttp2022.CalorieTracker.service;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,5 +37,16 @@ public class UserRedisService {
         }
         logger.info("Redis Service >>>>> no user found");
         return Optional.empty();
+    }
+
+    public String getList(){
+        Set<String> userList = redisTemplate.keys("*");
+        StringBuilder sb= new StringBuilder();
+        for (String username:userList){
+            sb.append(username +"\n");
+        }
+        String list = sb.substring(0, sb.length()-1).toString();
+
+        return list;
     }
 }
