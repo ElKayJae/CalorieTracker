@@ -66,11 +66,13 @@
                 <div class="card-body">
                     <div class="row">
                         <dd class="col-lg-4 col-md-6 d-flex justify-content-between px-5 "  th:each="foodData, stat :*{foodList}">
-                            <span class="d-flex mx-0 p-0">
-                                <input class="form-check-input me-2" type="checkbox" th:field="*{foodList[__${stat.index}__].checked}">
-                                <span class="text-capitalize" th:text="${foodData.name}"></span> 
+                            <span class="border p-2 rounded text-secondary">
+                               
+                                    <input class="form-check-input me-2" type="checkbox" th:field="*{foodList[__${stat.index}__].checked}">
+                                    <span class="text-capitalize pe-1" th:text="${foodData.name}"></span> 
+                               
+                                <span  th:text="${foodData.calories} +' kcal'"></span>
                             </span>
-                            <span  th:text="${foodData.calories} +' kcal'"></span>
                                     
                         </dd>                    
                     </div>

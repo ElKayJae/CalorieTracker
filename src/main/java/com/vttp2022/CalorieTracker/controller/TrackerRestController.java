@@ -43,7 +43,7 @@ public class TrackerRestController {
 
             if(optUser.isEmpty()){
             JsonObject errJson = Json.createObjectBuilder()
-            .add("error","Cannot find user " + username)
+            .add("error","User " + username + " not found")
             .build();
             return ResponseEntity.status(404).body(errJson.toString());
             

@@ -67,8 +67,11 @@
                 <div class="card-body">
                     <div class="row">
                         <dd class="col-lg-4 col-md-6 d-flex justify-content-between px-5 "  th:each="foodData, stat :*{foodList}">
-                            <span class="text-capitalize" th:text="${foodData.name}"></span> 
+                            <span class="border p-2 rounded text-secondary">
+                            <span class="text-capitalize pe-1" th:text="${foodData.name}"></span> 
                             <span  th:text="${foodData.calories} +' kcal'"></span> 
+                            </span>
+                            
                         </dd>                    
                     </div>
                 </div>
