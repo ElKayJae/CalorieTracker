@@ -10,21 +10,21 @@
 <body >
     <nav class="navbar navbar-dark bg-dark text-white px-3">
         <div class="container-fluid">
+            <input type="hidden" th:field="${currUser.username}"></input>
             <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
-            <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
-                <input type="hidden" th:field="*{day}"></input>
-                <div class="nav-item dropdown">
-                    <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
-                    <span th:object="${currUser}">
+                <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
+                    <input type="hidden" th:field="*{day}"></input>
+                    <div class="nav-item dropdown">
+                        <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
                         <ul class="dropdown-menu"  >
-                            <li th:each=" entry : *{dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
+                            <li th:each=" entry : ${currUser.dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
                         </ul>
-                    </span>
-                </div>
-            </span>
+                    </div>
+                </span>
+      
             <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
         </div>
-      </nav>
+    </nav>
 
     <div class="container mt-4">
         
@@ -53,14 +53,13 @@
 
         <!-- Food List of Selected Day -->
 
-        <form action="#" th:action="@{/del}" method="post" th:object="${foodListObj}">
+        <form action="#" th:action="@{'/del/' + ${currUser.username} + '/' + ${dayObj.day}}" method="post" th:object="${foodListObj}">
             <div class="m-3 card" th:if="${foodListObj!='emptyList'}"   >
                 <div class="card-header d-flex justify-content-between" >
-                    <!-- <p class="form-label fs-5 text-capitalize mx-3 mt-1"th:text="'Date: ' + ${dayObj.day}"></p>
-                    <div class="d-flex align-items-center"> -->
+ 
                         <button class="btn btn-danger mx-3  mt-1" name="delAll" type="submit">Delete All</button>
                         <button class="btn btn-warning mx-3  mt-1" name="delSelected" type="submit">Delete</button>
-                    <!-- </div> -->
+             
                 </div>
 
                 <div class="card-body">
@@ -91,7 +90,7 @@
   
             <div class="card-header d-flex flex-wrap m-3 justify-content-evenly" th:object="${currUser}" >
                 <div th:each=" entry : *{dayMap}">
-                    <a th:href="@{'/selectDay/'+${entry.key}}" class="mb-3 me-2 card text-decoration-none" >
+                    <a th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" class="mb-3 me-2 card text-decoration-none" >
                         <button class="btn btn-light p-3" type="button" th:text="${entry.key}"></button>
                     </a>
                 </div>

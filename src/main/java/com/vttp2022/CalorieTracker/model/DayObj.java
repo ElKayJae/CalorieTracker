@@ -16,6 +16,10 @@ public class DayObj {
         this.day = localDate.format(formatter);
     }
 
+    public DayObj(String day){
+        this.day = day;
+    }
+
     public FoodListObj getDailyFood() {
         return dailyFood;
     }

@@ -9,29 +9,29 @@
 </head>
 <body >
     <!-- Nav Bar -->
-    <nav class="navbar navbar-dark bg-dark text-white px-3">
-        <div class="container-fluid">
-            <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
-            <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
-                <input type="hidden" th:field="*{day}"></input>
-                <div class="nav-item dropdown">
-                    <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
-                    <span th:object="${currUser}">
-                        <ul class="dropdown-menu"  >
-                            <li th:each=" entry : *{dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
-                        </ul>
+    <form action="#" th:action="@{'/search/' + ${currUser.username}}" method="post" >
+        <nav class="navbar navbar-dark bg-dark text-white px-3">
+            <div class="container-fluid">
+                <input type="hidden" th:field="${currUser.username}"></input>
+                <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
+                    <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
+                        <div class="nav-item dropdown">
+                            <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
+                            <ul class="dropdown-menu"  >
+                                <li th:each=" entry : ${currUser.dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
+                            </ul>
+                        </div>
                     </span>
-                </div>
-            </span>
-            <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
-        </div>
-      </nav>
+          
+                <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
+            </div>
+        </nav>
 
-      <!-- body -->
-    <div class="container mt-4 ">
-        
-        <div class="card col bg-light m-3 py-3 px-5">
-            <form action="#" th:action="@{/showFood}" method="post" >
+        <!-- body -->
+        <div class="container mt-4 ">
+            
+            <div class="card col bg-light m-3 py-3 px-5">
+                
                 <label for="queryString" class="form-label fs-5 p-1">Food Consumed</label>
                 <input class="form-control mb-3" type="text" th:name="queryString" placeholder="5 apples or 200g beef" required />
                 <p class="fs-6">*Note: if weight is not entered, default is 100g</p>
@@ -49,13 +49,16 @@
                         
                     </div>
                 </div>
-            </form>
-        </div>
+                
+            </div>
+    </form>
         
 
         <!-- Food List of Selected Day -->
 
-        <form action="#" th:action="@{/edit}" method="post" th:object="${foodListObj}">
+        <form action="#" th:action="@{'/edit/' + ${currUser.username} + '/' + ${dayObj.day}}" method="post" th:object="${foodListObj}">
+            <input type="hidden" th:field="${currUser.username}">
+            <span th:field="${currUser}"></span>
             <div class="m-3 card" th:if="${foodListObj!='emptyList'}"   >
                 <div class="card-header d-flex justify-content-between" >
                     <p class="form-label fs-5 text-capitalize mx-3 mt-1" th:text="'Date: ' + ${dayObj.day}"></p>
@@ -86,7 +89,7 @@
 
         <div class="card-header d-flex flex-wrap m-3 justify-content-evenly" th:object="${currUser}" >
             <div th:each=" entry : *{dayMap}">
-                <a th:href="@{'/selectDay/'+${entry.key}}" class="mb-3 me-2 card text-decoration-none" >
+                <a th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" class="mb-3 me-2 card text-decoration-none" >
                     <button class="btn btn-light p-3" type="button" th:text="${entry.key}"></button>
                 </a>
             </div>

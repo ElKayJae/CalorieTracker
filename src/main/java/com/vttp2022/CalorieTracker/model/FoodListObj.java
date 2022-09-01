@@ -31,7 +31,6 @@ public class FoodListObj {
             total+=food.getCalories().doubleValue();
         }
         totalCalories = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
-        logger.info(totalCalories.toString());
         return totalCalories;
     }
 
@@ -47,9 +46,14 @@ public class FoodListObj {
         this.foodList = foodList;
     }
 
-    public void addfood(FoodData foodData){
+    public void addFood(FoodData foodData){
         foodList.add(foodData);
     }
+
+    public void delFood(int i){
+        foodList.remove(i);
+    }
+
 
     public void listName(){
         logger.info("Items in List");
@@ -69,7 +73,7 @@ public class FoodListObj {
             for (int i = 0; i < arr.size(); i++) {
                 JsonObject o = arr.getJsonObject(i);
                 FoodData foodData = FoodData.createJson(o);
-                foodList.addfood(foodData);
+                foodList.addFood(foodData);
                 logger.info(foodData.getName());
             }
             

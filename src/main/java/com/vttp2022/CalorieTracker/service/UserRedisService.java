@@ -24,7 +24,8 @@ public class UserRedisService {
 
     public void save(final User user) {
         logger.info("saving...");
-            redisTemplate.opsForValue().set(user.getUsername(),user);
+        redisTemplate.opsForValue().set(user.getUsername(),user);
+        logger.info("saved");
     }
 
     public Optional<User> getByUsername(final String username) {
@@ -46,7 +47,6 @@ public class UserRedisService {
             sb.append(username +"\n");
         }
         String list = sb.substring(0, sb.length()-1).toString();
-
         return list;
     }
 }

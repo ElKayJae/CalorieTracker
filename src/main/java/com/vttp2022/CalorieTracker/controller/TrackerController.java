@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vttp2022.CalorieTracker.model.DayObj;
-import com.vttp2022.CalorieTracker.model.FoodData;
 import com.vttp2022.CalorieTracker.model.FoodListObj;
 import com.vttp2022.CalorieTracker.model.User;
 import com.vttp2022.CalorieTracker.service.CalorieTrackerService;
@@ -29,25 +28,13 @@ public class TrackerController {
     
     @Autowired
     private CalorieTrackerService trackerService;
-
+    
     @Autowired
-    private User currUser;
-
-    @Autowired
-    private DayObj dayObj;
-
-    @Autowired
-    UserRedisService redisService;
-
-    @Autowired
-    FoodListObj currDayListObj;
-
-    String currDay;
-
+    private UserRedisService redisService;
+    
 
     @RequestMapping("/")
     public String showIndexPage(Model model){
-        currUser = new User();
         return "index";
     }
 
@@ -55,96 +42,54 @@ public class TrackerController {
     public String login(@RequestParam(required=true) String username, Model model){
         
         Optional<User> optUser = redisService.getByUsername(username);
+        User currUser = new User();
+
         if (optUser.isEmpty()){
-            currUser = new User();
             currUser.setUsername(username);
         } else {
             currUser = optUser.get();
         }
-        if (currUser.getDayMap().containsKey(dayObj.day)){
-            currDayListObj= currUser.getDayMap().get(dayObj.day).getDailyFood();
-            model.addAttribute("foodListObj", currDayListObj);
-        } else {
-            model.addAttribute("foodListObj", "emptyList");
-        }
-        dayObj.setDailyFood(currDayListObj);
-        currDay= dayObj.day;
-        logger.info(dayObj.day);
+        logger.info("login username >>>>>>" + currUser.getUsername());
+
+        DayObj dayObj = new DayObj();
+        String currDay = dayObj.getDay();
+        FoodListObj currDayListObj= currUser.getFoodListObj(currDay);
+        redisService.save(currUser);
+        
+        model.addAttribute("foodListObj", currDayListObj);
         model.addAttribute("currUser", currUser);
         model.addAttribute("dayObj", dayObj);
 
         return "main";
     }
  
+    @PostMapping("/search/{username}")
+    public String showFood( @PathVariable(name="username", required=true) String username, 
+    @RequestParam(required=true) String queryString, @RequestParam(required=true) String day, Model model){
+
+        logger.info("Username in /search >>>> " +username+" day>>>>" + day);
+        User currUser = redisService.getByUsername(username).get();
+        Optional<FoodListObj> optFoodListObj = trackerService.getFoodList(queryString);
+        DayObj dayObj = new DayObj(day);
+
+        model.addAttribute("dayObj", dayObj);
+        model.addAttribute("currUser", currUser);
+        model.addAttribute("foodListObj", optFoodListObj.get());
+        
+        return "search";
+    }
     
-    @PostMapping(value="/add", params = "addSelected")
-    public String addFood(@ModelAttribute FoodListObj foodListObj, @ModelAttribute DayObj dayObj, Model model){
-        for(FoodData foodData : foodListObj.getFoodList()){
-            if (foodData.isChecked()){
-                foodData.setChecked(false);
-                currDayListObj.getFoodList().add(foodData);
-                logger.info(foodData.getName());
-            }
-        }
-        dayObj.setDailyFood(currDayListObj);
-        currUser.addDay(dayObj);
+    @PostMapping(value="/add/{username}/{day}", params = "addSelected")
+    public String addFood(@PathVariable(name="username", required=true) String username,
+    @PathVariable(required=true) String day, @ModelAttribute FoodListObj foodListObj, Model model){
+
+        logger.info("add selected >>>>>>>>>> " +username+" day>>>>" + day);
+        User currUser = redisService.getByUsername(username).get();
+        DayObj dayObj = new DayObj(day);
+        currUser.addFoodFromListObj(day, foodListObj);
+        FoodListObj currDayListObj= currUser.getFoodListObj(day);
         redisService.save(currUser);
         
-        model.addAttribute("currUser", currUser);
-        model.addAttribute("foodListObj", currDayListObj);
-        model.addAttribute("dayObj", dayObj);
-        
-        return "main";
-    }
-
-    @PostMapping(value="/add", params = "addAll")
-    public String addAll(@ModelAttribute FoodListObj foodListObj, @ModelAttribute DayObj dayObj, Model model){
-        for(FoodData foodData : foodListObj.getFoodList()){
-                foodData.setChecked(false);
-                currDayListObj.getFoodList().add(foodData);
-            }
-
-        dayObj.setDailyFood(currDayListObj);
-        currUser.addDay(dayObj);
-        redisService.save(currUser);
-        
-        model.addAttribute("currUser", currUser);
-        model.addAttribute("foodListObj", currDayListObj);
-        model.addAttribute("dayObj", dayObj);
-        
-        return "main";
-    }
-
-    @PostMapping(value = "/del", params = "delSelected")
-    public String delete(@ModelAttribute FoodListObj foodListObj, @ModelAttribute DayObj dayObj, Model model){
-
-        int counter=0;
-        for(int i=0; i < foodListObj.getFoodList().size(); i++){
-            if (foodListObj.getFoodList().get(i).isChecked()){
-                foodListObj.getFoodList().get(i).setChecked(false);
-                currDayListObj.getFoodList().remove(i+counter);
-                counter--;
-            }
-        }
-
-        dayObj.setDay(currDay);
-        
-        if(currDayListObj.getFoodList().size()==0){
-            currUser.delDay(dayObj);
-            dayObj.newDay();
-            if(currUser.getDayMap().containsKey(dayObj.day)){
-                currDayListObj=currUser.getDayMap().get(dayObj.day).getDailyFood();
-            } else {
-                currDayListObj = new FoodListObj();
-            }
-            currDay = dayObj.getDay();
-            logger.info("list size" + currDayListObj.getFoodList().size());
-        } else {
-            dayObj.setDailyFood(currDayListObj);
-            currUser.addDay(dayObj);
-        }
-        redisService.save(currUser);
-        logger.info("del day >>>>>>>>>" + dayObj.day);
         model.addAttribute("currUser", currUser);
         model.addAttribute("foodListObj", currDayListObj);
         model.addAttribute("dayObj", dayObj);
@@ -152,52 +97,50 @@ public class TrackerController {
         return "main";
     }
     
-    @PostMapping(value = "/del", params = "delAll")
-    public String deleteAll(@ModelAttribute FoodListObj foodListObj, @ModelAttribute DayObj dayObj, Model model){
+    @PostMapping(value="/add/{username}/{day}", params = "addAll")
+    public String addAll(@PathVariable(name="username", required=true) String username,
+    @PathVariable(required=true) String day, @ModelAttribute FoodListObj foodListObj, Model model){
 
-
-        dayObj.setDay(currDay);
-        currUser.delDay(dayObj);
-        dayObj.newDay();
-        
-
-        if (currUser.getDayMap().containsKey(dayObj.day)){
-                currDayListObj=currUser.getDayMap().get(dayObj.day).getDailyFood();
-            } else {
-                currDayListObj = new FoodListObj();
-            }
-        currDay = dayObj.getDay();
-        logger.info("list size" + currDayListObj.getFoodList().size());
-
+        User currUser = redisService.getByUsername(username).get();
+        DayObj dayObj = new DayObj(day);
+        currUser.addAllFromListObj(day, foodListObj);
         redisService.save(currUser);
-        logger.info("del day >>>>>>>>>" + dayObj.day);
+        FoodListObj currDayListObj=currUser.getFoodListObj(day);
+
         model.addAttribute("currUser", currUser);
         model.addAttribute("foodListObj", currDayListObj);
         model.addAttribute("dayObj", dayObj);
         
         return "main";
     }
-    
-    @PostMapping("/edit")
-    public String edit(@ModelAttribute DayObj dayObj, Model model){
-        logger.info("back day >>>>>>>>>" + dayObj.day);
-        dayObj.setDay(currDay);
-        logger.info("back day >>>>>>>>>" + dayObj.day);
+
+    @PostMapping("/edit/{username}/{day}")
+    public String edit(@PathVariable(name="username", required=true) String username,  
+    @PathVariable(required=true) String day, Model model){
+
+        User currUser = redisService.getByUsername(username).get();
+        FoodListObj currDayListObj = currUser.getFoodListObj(day);
+        DayObj dayObj = new DayObj(day);
+        logger.info("edit >>>>>>>>>>>>> " +username+" day>>>>" + day);
+
         model.addAttribute("currUser", currUser);
         model.addAttribute("foodListObj", currDayListObj);
         model.addAttribute("dayObj", dayObj);
         
         return "edit";
     }
-
-    @GetMapping("/selectDay/{date}")
-    public String selectDay( @PathVariable(name="date", required=true) String date, 
-    @ModelAttribute DayObj dayObj, Model model){
+    
+    @PostMapping(value = "/del/{username}/{day}", params = "delSelected")
+    public String delete(@PathVariable(name="username", required=true) String username,  @PathVariable(required=true) String day,
+    @ModelAttribute FoodListObj foodListObj, Model model){
         
-        currDayListObj=currUser.getDayMap().get(date).getDailyFood();
-        dayObj.setDay(date);
-        currDay= dayObj.day;
-        logger.info(dayObj.day);
+        User currUser = redisService.getByUsername(username).get();
+        DayObj dayObj = new DayObj(day);
+        currUser.delFoodFromListObj(day, foodListObj);
+        FoodListObj currDayListObj = currUser.getFoodListObj(day);
+        redisService.save(currUser);
+        logger.info("del selected >>>>>>>>>>>>> " +username+" day>>>>" + day);
+
         model.addAttribute("currUser", currUser);
         model.addAttribute("foodListObj", currDayListObj);
         model.addAttribute("dayObj", dayObj);
@@ -205,11 +148,18 @@ public class TrackerController {
         return "main";
     }
     
-    @GetMapping("/back")
-    public String backto(@ModelAttribute FoodListObj foodListObj, @ModelAttribute DayObj dayObj, Model model){
-        logger.info("back day >>>>>>>>>" + dayObj.day);
-        dayObj.setDay(currDay);
-        logger.info("back day >>>>>>>>>" + dayObj.day);
+    @PostMapping(value = "/del/{username}/{day}", params = "delAll")
+    public String deleteAll(@PathVariable(name="username", required=true) String username,  @PathVariable(required=true) String day,
+    @ModelAttribute FoodListObj foodListObj, Model model){
+
+        User currUser = redisService.getByUsername(username).get();
+        currUser.delDay(day);
+        DayObj dayObj = new DayObj();
+        String currDay = dayObj.getDay();
+        FoodListObj currDayListObj=currUser.getFoodListObj(currDay);
+        redisService.save(currUser);
+        logger.info("del all >>>>>>>>>>>> " +username+" day>>>>" + day);
+
         model.addAttribute("currUser", currUser);
         model.addAttribute("foodListObj", currDayListObj);
         model.addAttribute("dayObj", dayObj);
@@ -218,34 +168,35 @@ public class TrackerController {
     }
     
 
-    @PostMapping("/showFood")
-    public String showFood(@RequestParam(required=true) String queryString, @RequestParam(required=true) String day, Model model){
-        logger.info(day);
-        logger.info(dayObj.day);
-    
-        if (!dayObj.getDay().equals(day)){
-            logger.info("new day");
-            if(currUser.getDayMap().containsKey(day)){
-                currDayListObj = currUser.getDayMap().get(day).dailyFood;
-            } else {
-                currDayListObj = new FoodListObj();
-            }
-            dayObj.setDay(day);
-            }
-    
-        logger.info(dayObj.day);
-        currDay= dayObj.day;
-        Optional<FoodListObj> optFoodListObj = trackerService.getFoodList(queryString);
-        
-    
-        model.addAttribute("dayObj", dayObj);
+    @GetMapping("/selectDay/{username}/{day}")
+    public String selectDay( @PathVariable(name="username", required=true) String username, 
+    @PathVariable(required=true) String day, Model model){
+
+        User currUser = redisService.getByUsername(username).get();
+        FoodListObj currDayListObj=currUser.getFoodListObj(day);
+        DayObj dayObj = new DayObj(day);
+        logger.info("select >>>>>>>>>>>> " +username+" day>>>>" + day);
+
         model.addAttribute("currUser", currUser);
-        if(optFoodListObj.isEmpty()){
-            model.addAttribute("foodListObj", new FoodListObj());
-            return "showFood";
-        }
-        model.addAttribute("foodListObj", optFoodListObj.get());
-        logger.info("add day >>>>>>>>>" + dayObj.day);
-            return "showFood";
+        model.addAttribute("foodListObj", currDayListObj);
+        model.addAttribute("dayObj", dayObj);
+        
+        return "main";
     }
+    
+    @GetMapping("/back/{username}/{day}")
+    public String backto( @PathVariable(name="username", required=true) String username, 
+    @PathVariable(required=true) String day, Model model){
+        User currUser = redisService.getByUsername(username).get();
+        DayObj dayObj = new DayObj(day);
+        FoodListObj currDayListObj = currUser.getFoodListObj(day);
+        logger.info("back >>>>>>>>>>>>> " +username+" day>>>>" + day);
+        model.addAttribute("currUser", currUser);
+        model.addAttribute("foodListObj", currDayListObj);
+        model.addAttribute("dayObj", dayObj);
+        
+        return "main";
+    }
+    
+
 }

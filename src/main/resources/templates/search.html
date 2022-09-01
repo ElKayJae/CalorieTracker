@@ -8,30 +8,39 @@
     <title>Calorie Tracker</title>
 </head>
 <body>
-    <form method="POST" th:action="@{/add}" th:object="${foodListObj}">
+    <form method="POST" th:action="@{'/add/' + ${currUser.username} + '/' + ${dayObj.day}}" th:object="${foodListObj}">
         <nav class="navbar navbar-dark bg-dark text-white px-3">
             <div class="container-fluid">
+                <input type="hidden" th:field="${currUser.username}"></input>
                 <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
-                <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
-                    <input type="hidden" th:field="*{day}"></input>
-                    <div class="nav-item dropdown">
-                        <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
-                        <span th:object="${currUser}">
+                    <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
+                        <input type="hidden" th:field="*{day}"></input>
+                        <div class="nav-item dropdown">
+                            <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
                             <ul class="dropdown-menu"  >
-                                <li th:each=" entry : *{dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
+                                <li th:each=" entry : ${currUser.dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
                             </ul>
-                        </span>
-                    </div>
-                </span>
+                        </div>
+                    </span>
+          
                 <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
             </div>
-          </nav>
+        </nav>
 
         <div class="container my-3">
             <div class="row m-2 ">
-                <div class="card-title">
+                <div th:unless="${foodListObj.foodList.isEmpty()}" class="card-title">
                     <h4>Nutrition Information</h4>
                 </div>
+                
+                <div th:if="${foodListObj.foodList.isEmpty()}" class="row d-flex justify-content-center">
+                    <div class="fs-5 text-center m-3">Item not found, please return and try again.</div>
+                    <a th:href="@{'/back/' + ${currUser.username} + '/' + ${dayObj.day}}" class="col-4 mb-3 d-grid" >
+                        <button class="btn btn-secondary" type="button">Back</button>
+                    </a>
+
+                </div>
+
 
                 <div class="col-lg-4 col-md-6" th:each="foodData, stat :*{foodList}">
                     <div class="card my-2">
@@ -39,7 +48,7 @@
 
                             <label class="form-label fs-5 text-capitalize" th:for="${foodData.name}" th:text="${foodData.name}"></label>
                             <input type="hidden" th:field="*{foodList[__${stat.index}__].name}">
-                            <input class="form-check-input" type="checkbox" th:field="*{foodList[__${stat.index}__].checked}">
+                            <input class="form-check-input" type="checkbox" th:field="*{foodList[__${stat.index}__].checked}"  th:unless="${foodListObj.foodList.size()==1}">
 
                         </div>
                         
@@ -60,17 +69,17 @@
                     </div>
                 </div>
 
-                <div class="card-title d-flex gap-3 mt-3 ">
+                <div th:unless="${foodListObj.foodList.isEmpty()}" class="card-title d-flex gap-3 mt-3 ">
                 
                     <div class="col d-grid mb-3">
                         <button class="btn btn-dark" type="submit" name="addSelected">Add</button>
                     </div>
 
                     <div class="col d-grid mb-3">
-                        <button class="btn btn-dark" type="submit" name="addAll">Add All</button>
+                        <button class="btn btn-dark" type="submit" name="addAll"  th:unless="${foodListObj.foodList.size()==1}">Add All</button>
                     </div>
                     
-                    <a th:href="@{/back}" class="col d-grid mb-3" >
+                    <a th:href="@{'/back/' + ${currUser.username} + '/' + ${dayObj.day}}" class="col d-grid mb-3" >
                         <button class="btn btn-secondary" type="button">Back</button>
                     </a>
                     
