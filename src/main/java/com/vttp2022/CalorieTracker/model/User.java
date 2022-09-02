@@ -1,10 +1,13 @@
 package com.vttp2022.CalorieTracker.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+
+import ch.qos.logback.classic.Logger;
 
 @Component ("user")
 public class User {
@@ -107,5 +110,11 @@ public class User {
 
     public List<FoodData> getFoodList(String day){
         return dayMap.get(day).getDailyFood().getFoodList();
+    }
+
+    //may add a sorted map function later]
+    public List<String> sortMap(){
+        System.out.println();
+        return new ArrayList<>();
     }
 }

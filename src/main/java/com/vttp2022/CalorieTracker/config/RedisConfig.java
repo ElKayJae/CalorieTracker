@@ -34,7 +34,7 @@ public class RedisConfig {
     @Value("${spring.redis.password}")
     private String redisPassword;
 
-
+    
     @Bean(name = "userRedisConfig")
     @Scope("singleton")
     public RedisTemplate<String, User> redisTemplate() {
