@@ -29,7 +29,7 @@
     <div class="container mt-4">
         
         <div class="card col bg-light m-3 py-3 px-5">
-            <form action="#" th:action="@{/showFood}" method="post" >
+            <form action="#" th:action="@{'/search/' + ${currUser.username}}" method="post" >
                 <label for="queryString" class="form-label fs-5 p-1">Food Consumed</label>
                 <input class="form-control mb-3" type="text" th:name="queryString" placeholder="5 apples or 200g beef" required />
                 <p class="fs-6">*Note: if weight is not entered, default is 100g</p>

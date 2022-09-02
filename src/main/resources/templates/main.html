@@ -9,25 +9,25 @@
 </head>
 <body >
     <!-- Nav Bar -->
+    <nav class="navbar navbar-dark bg-dark text-white px-3">
+        <div class="container-fluid">
+            <input type="hidden" th:field="${currUser.username}"></input>
+            <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
+            <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
+                <div class="nav-item dropdown">
+                    <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
+                    <ul class="dropdown-menu"  >
+                        <li th:each=" entry : ${currUser.dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
+                    </ul>
+                </div>
+            </span>
+            
+            <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
+        </div>
+    </nav>
+    
+    <!-- body -->
     <form action="#" th:action="@{'/search/' + ${currUser.username}}" method="post" >
-        <nav class="navbar navbar-dark bg-dark text-white px-3">
-            <div class="container-fluid">
-                <input type="hidden" th:field="${currUser.username}"></input>
-                <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
-                    <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
-                        <div class="nav-item dropdown">
-                            <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
-                            <ul class="dropdown-menu"  >
-                                <li th:each=" entry : ${currUser.dayMap}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
-                            </ul>
-                        </div>
-                    </span>
-          
-                <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
-            </div>
-        </nav>
-
-        <!-- body -->
         <div class="container mt-4 ">
             
             <div class="card col bg-light m-3 py-3 px-5">
