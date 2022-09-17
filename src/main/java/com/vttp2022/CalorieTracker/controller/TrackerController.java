@@ -137,8 +137,12 @@ public class TrackerController {
         User currUser = redisService.getByUsername(username).get();
         DayObj dayObj = new DayObj(day);
         currUser.delFoodFromListObj(day, foodListObj);
-        FoodListObj currDayListObj = currUser.getFoodListObj(day);
         redisService.save(currUser);
+        if (!currUser.getDayMap().containsKey(day)){
+            dayObj = new DayObj();
+            day = dayObj.getDay();
+        }
+        FoodListObj currDayListObj = currUser.getFoodListObj(day);
         logger.info("del selected >>>>>>>>>>>>> " +username+" day>>>>" + day);
 
         model.addAttribute("currUser", currUser);

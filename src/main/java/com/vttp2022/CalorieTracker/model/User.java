@@ -1,16 +1,17 @@
 package com.vttp2022.CalorieTracker.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ch.qos.logback.classic.Logger;
 
 @Component ("user")
 public class User {
+    private static final Logger logger = LoggerFactory.getLogger(User.class);
     String username;
     String password;
     Map<String,DayObj> dayMap = new HashMap<>();
@@ -40,6 +41,7 @@ public class User {
 
     public void delDay(String day){
         dayMap.remove(day);
+        logger.info(day + " deleted");
     }
     
     public void addFood(String day, FoodData foodData){ 
@@ -99,11 +101,13 @@ public class User {
                 foodListObj.getFoodList().get(i).setChecked(false);
                 delFood(day, i+counter);
                 counter--;
+                logger.info("size is " + getFoodList(day).size());
             }
         }
         if (getDayMap().containsKey(day)){
             if(getFoodList(day).size()==0){
                 delDay(day);
+               
             }
         }
     }
@@ -112,9 +116,4 @@ public class User {
         return dayMap.get(day).getDailyFood().getFoodList();
     }
 
-    //may add a sorted map function later]
-    public List<String> sortMap(){
-        System.out.println();
-        return new ArrayList<>();
-    }
 }
