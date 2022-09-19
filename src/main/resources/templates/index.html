@@ -11,21 +11,24 @@
 
     <div class="container ">
         <h4 class="m-3">Calorie Tracking App</h4>
+        <p class="my-4 mx-3">Welcome to our app. We will help you to keep logs of food consumed daily, helping you to manage your calorie consumption and diet.</p>
         <div class="card col bg-light m-3 py-3 px-5">
             <form action="#" th:action="@{/login}" method="post" >
 
-                <label for="username" class="form-label fs-5 p-1">Login:</label>
-                <input class="form-control mb-3" type="text" th:name="username" placeholder="Username" required />
+                <div class="input-group mb-3 mt-3 col shadow-sm">
+                    <label class="input-group-text bg-white fw-semibold " for="username" id="inputGroup-sizing-default" >Login</label>
+                    <input type="text" class="form-control" aria-describedby="inputGroup-sizing-default" id="username"  th:name="username" placeholder="Username" required/>
+                </div>
         
-                    <div class="col-lg col-md-12 align-items-end mt-3">
-                        <div class="d-grid ">
-                            <button class="btn btn-dark " type="submit">Login</button>
-                        </div>
-                        
+                <div class="col-lg col-md-12 align-items-end mt-3">
+                    <div class="d-grid ">
+                        <button class="btn btn-dark " type="submit">Login</button>
                     </div>
                 </div>
+
             </form>
         </div>
+        
     </div>
 
 
