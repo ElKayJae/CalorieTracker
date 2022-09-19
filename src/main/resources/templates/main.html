@@ -30,12 +30,12 @@
     
     <!-- body -->
     <form action="#" th:action="@{'/search/' + ${currUser.username}}" method="post" >
-        <div class="container mt-4 ">
+        <div class="container">
             
-            <div class="card col bg-light m-3 py-3 px-5">
+            <div class="card col bg-light mx-3 my-3 py-3 py-sm-4 px-sm-5 px-3">
                 
                 
-                <div class="input-group mb-3 mt-3 col shadow-sm">
+                <div class="input-group mb-3 col shadow-sm">
                     <label class="input-group-text bg-white fw-semibold" for="queryString" id="inputGroup-sizing-default" >Food</label>
                     <input type="text" class="form-control" aria-describedby="inputGroup-sizing-default" id="queryString" autocomplete="off" th:name="queryString" placeholder="5 apples or 200g beef" required/>
                 </div>
@@ -87,7 +87,7 @@
 
             <div class="card-body">
                 <div class="row">
-                    <dd class="col-lg-4 col-md-6 d-flex justify-content-between px-5 "  th:each="foodData, stat :*{foodList}">
+                    <dd class="col-lg-4 col-md-6 d-flex justify-content-between px-sm-5 px-3"  th:each="foodData, stat :*{foodList}">
                         <span class="border p-2 rounded text-secondary">
                             <span class="text-capitalize" th:text="${foodData.name}"></span>
                             <span th:text="${foodData.weight} + ' g'"></span> <br>
@@ -98,7 +98,7 @@
                 </div>
             </div>
             <div class="card-footer ">
-                <p class="mx-3 fs-6 my-0 fw-semibold" th:text="'Total Calories: '+ ${foodListObj.totalCalories} + ' kcal' "> </p>
+                <p class="mx-2 fs-6 my-0 fw-semibold" th:text="'Total Calories: '+ ${foodListObj.totalCalories} + ' kcal' "> </p>
             </div>
         </div>
     </form>
