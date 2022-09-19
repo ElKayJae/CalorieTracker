@@ -5,7 +5,7 @@
     background-attachment: fixed;
     box-sizing: border-box;
     background-size: cover;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .sticky-top{
