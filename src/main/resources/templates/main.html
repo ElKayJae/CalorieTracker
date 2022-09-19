@@ -19,7 +19,7 @@
                 <div class="nav-item dropdown">
                     <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
                     <ul class="dropdown-menu"  >
-                        <li th:each=" entry : ${currUser.dayMap.descendingMap()}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
+                        <li th:each=" entry : ${currUser.dayMap.descendingMap()}"><a class="dropdown-item" th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" th:text="${entry.key}"></a></li>
                     </ul>
                 </div>
             </span>
@@ -37,7 +37,7 @@
                 
                 <div class="input-group mb-3 col shadow-sm">
                     <label class="input-group-text fw-semibold bg-white bg-opacity-50" for="queryString" id="inputGroup-sizing-default" >Food</label>
-                    <input type="text" class="form-control bg-white bg-opacity-50" aria-describedby="inputGroup-sizing-default" id="queryString" autocomplete="off" th:name="queryString" placeholder="5 apples or 200g beef" required/>
+                    <input type="text" class="form-control bg-white bg-opacity-50" aria-describedby="inputGroup-sizing-default" id="queryString" autocomplete="on" th:name="queryString" placeholder="5 apples or 200 g beef" required/>
                 </div>
 
                 <p class="fs-6">*Note: if weight is not entered, default is 100g</p>
@@ -47,7 +47,7 @@
                     <div class="col" th:object="${dayObj}">
                         <span class="input-group mb-3 shadow-sm">
                             <label class="input-group-text bg-white bg-opacity-50 fw-semibold" for="date" id="inputGroup-sizing-default">Date</label>
-                            <input type="text" class="form-control bg-white bg-opacity-50" aria-describedby="inputGroup-sizing-default" id="date" autocomplete="off" th:field="*{day}" required/>
+                            <input type="date" class="form-control bg-white bg-opacity-50" aria-describedby="inputGroup-sizing-default" id="date" autocomplete="off" th:field="*{day}" required/>
                         </span>
                     </div>
 
@@ -106,7 +106,7 @@
     <!-- list of recorded days -->
 
 
-    <div class="card-header d-flex flex-wrap m-3 justify-content-evenly" th:object="${currUser}" >
+    <div class="card-header flex-wrap m-3 justify-content-evenly d-none d-sm-flex" th:object="${currUser}" >
         <div th:each=" entry : *{dayMap.descendingMap()}">
             <a th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" class="mb-3 me-2 card bg-white bg-opacity-50 text-decoration-none" >
                 <button class="btn p-3 text-black fw-semibold" type="button">

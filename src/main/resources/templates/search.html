@@ -15,16 +15,15 @@
             <div class="container-fluid">
                 <input type="hidden" th:field="${currUser.username}"></input>
                 <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
-                    <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
-                        <input type="hidden" th:field="*{day}"></input>
-                        <div class="nav-item dropdown">
-                            <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
-                            <ul class="dropdown-menu"  >
-                                <li th:each=" entry : ${currUser.dayMap.descendingMap()}"><a class="dropdown-item" th:href="@{'/selectDay/'+${entry.key}}" th:text="${entry.key}"></a></li>
-                            </ul>
-                        </div>
-                    </span>
-          
+                <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
+                    <div class="nav-item dropdown">
+                        <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
+                        <ul class="dropdown-menu"  >
+                            <li th:each=" entry : ${currUser.dayMap.descendingMap()}"><a class="dropdown-item" th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" th:text="${entry.key}"></a></li>
+                        </ul>
+                    </div>
+                </span>
+                
                 <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
             </div>
         </nav>
@@ -36,7 +35,7 @@
                 </div>
                 
                 <div th:if="${foodListObj.foodList.isEmpty()}" class="row d-flex justify-content-center">
-                    <div class="fs-5 text-center m-3">Item not found, please return and try again.</div>
+                    <div class="fs-6 text-center m-3 text-white">Item not found, please return and try again.</div>
                     <a th:href="@{'/back/' + ${currUser.username} + '/' + ${dayObj.day}}" class="col-4 mb-3 d-grid" >
                         <button class="btn btn-secondary" type="button">
                             <span class="me-1">Back</span>
