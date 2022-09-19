@@ -1,0 +1,15 @@
+.bg-main{
+    background: rgb(23,3,75);
+    background: linear-gradient(115deg, rgba(23,3,75,1) 0%, rgba(33,46,172,1) 45%, rgba(73,208,235,1) 100%);
+
+    background-attachment: fixed;
+    box-sizing: border-box;
+    background-size: cover;
+    overflow: scroll;
+}
+
+.sticky-top{
+    position: sticky; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+  }
