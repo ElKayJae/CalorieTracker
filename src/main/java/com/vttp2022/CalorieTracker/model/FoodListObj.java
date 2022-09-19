@@ -30,7 +30,7 @@ public class FoodListObj {
         for (FoodData food:foodList){
             total+=food.getCalories().doubleValue();
         }
-        totalCalories = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
+        totalCalories = new BigDecimal(total).setScale(1, RoundingMode.HALF_UP);
         return totalCalories;
     }
 

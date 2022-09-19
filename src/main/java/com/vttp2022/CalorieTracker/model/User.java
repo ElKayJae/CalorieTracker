@@ -1,8 +1,7 @@
 package com.vttp2022.CalorieTracker.model;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +12,13 @@ import org.springframework.stereotype.Component;
 public class User {
     private static final Logger logger = LoggerFactory.getLogger(User.class);
     String username;
-    String password;
-    Map<String,DayObj> dayMap = new HashMap<>();
+    TreeMap<String,DayObj> dayMap = new TreeMap<>();
 
-    public Map<String, DayObj> getDayMap() {
+
+    public TreeMap<String, DayObj> getDayMap() {
         return dayMap;
     }
-    public void setDayMap(Map<String, DayObj> dayMap) {
+    public void setDayMap(TreeMap<String, DayObj> dayMap) {
         this.dayMap = dayMap;
     }
     public String getUsername() {
@@ -27,12 +26,6 @@ public class User {
     }
     public void setUsername(String username) {
         this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void addDay(DayObj dayObj){

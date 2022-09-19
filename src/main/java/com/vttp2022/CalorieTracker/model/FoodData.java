@@ -14,7 +14,7 @@ public class FoodData {
     private static final Logger logger = LoggerFactory.getLogger(FoodData.class);
 
     private String name;
-    private BigDecimal weight;
+    private Integer weight;
     private BigDecimal calories;
     private BigDecimal protein;
     private BigDecimal carbs;
@@ -41,10 +41,10 @@ public class FoodData {
     public void setName(String name) {
         this.name = name;
     }
-    public BigDecimal getWeight() {
+    public Integer getWeight() {
         return weight;
     }
-    public void setWeight(BigDecimal weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
     public BigDecimal getCalories() {
@@ -74,7 +74,7 @@ public class FoodData {
         foodData.name = nameStr;
         logger.info(nameStr);
         JsonNumber weightNum = o.getJsonNumber("serving_size_g");
-        foodData.weight = weightNum.bigDecimalValue();
+        foodData.weight = weightNum.intValue();
         logger.info(foodData.weight.toString());
         JsonNumber caloriesNum = o.getJsonNumber("calories");
         foodData.calories = caloriesNum.bigDecimalValue();
