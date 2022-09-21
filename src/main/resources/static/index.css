@@ -13,3 +13,16 @@
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
   }
+
+  .move-modal-down{
+    translate: 0 100%
+  }
+
+  .opacity-85{
+    opacity: .85;
+  }
+
+  .bg-popup{
+    background: rgb(202,214,255);
+    background: linear-gradient(115deg, rgba(202,214,255,1) 0%, rgba(219,236,255,1) 90%);
+  }
