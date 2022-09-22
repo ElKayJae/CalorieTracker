@@ -201,6 +201,18 @@ public class TrackerController {
         
         return "main";
     }
+
+    @GetMapping("/fullRecords/{username}/{day}")
+    public String fullRecords( @PathVariable(name="username", required=true) String username, 
+    @PathVariable(required=true) String day, Model model){
+        User currUser = redisService.getByUsername(username).get();
+        DayObj dayObj = new DayObj(day);
+        logger.info("back >>>>>>>>>>>>> " +username+" day>>>>" + day);
+        model.addAttribute("currUser", currUser);
+        model.addAttribute("dayObj", dayObj);
+        
+        return "fullRecords";
+    }
     
 
 }

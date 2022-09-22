@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/index.css}">
+</head>
+<body class="m-0 p-0 bg-main">
+
+    <!-- Nav Bar -->
+    <nav class="navbar navbar-dark bg-dark text-white px-3 sticky-top">
+        <div class="container-fluid">
+            <input type="hidden" th:field="${currUser.username}"></input>
+            <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
+            <span class="col-md-4 d-flex" th:object="${dayObj}">
+                <div class="nav-item dropdown">
+                    <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
+                    <ul class="dropdown-menu"  >
+                        <li th:each=" entry,iterStat : ${currUser.dayMap.descendingMap()}">
+                            <a class="dropdown-item" th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" th:text="${entry.key}" th:if="${iterStat.index}<5"></a>
+                        </li>
+
+                        <li><a class="dropdown-item"  th:href="@{'/fullRecords/'+ ${currUser.username} + '/' + ${dayObj.day}}">Full Records</a></li>
+                    </ul>
+                </div>
+            </span>
+            <div class="d-flex justify-content-end">
+                <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- body -->
+    
+    <!-- list of recorded days -->
+
+
+    <div class="flex-wrap m-3 justify-content-evenly d-flex" th:object="${currUser}" >
+        <div th:each=" entry, iterStat : *{dayMap.descendingMap()}">
+            <a th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" class="mb-3 me-2 card bg-white bg-opacity-50 text-decoration-none" >
+                <button class="btn p-3 text-black fw-semibold" type="button">
+                    <span  th:text="${entry.key}"></span><br> 
+                    <span th:text="${entry.value.dailyFood.totalCalories} + ' kcal'"></span>
+                </button>
+            </a>
+         
+        </div>
+
+    </div>
+    <div class="d-flex justify-content-center m-3 ">
+
+        <a th:href="@{'/back/' + ${currUser.username} + '/' + ${dayObj.day}}" class="text-decoration-none " >
+            <button class="btn btn-secondary" type="button">
+                <span class="me-1">Back</span>
+                <i class="bi bi-arrow-left"></i>
+            </button>
+        </a>
+    </div>
+   
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    
+
+
+</body>
+</html>

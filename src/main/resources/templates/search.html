@@ -11,20 +11,27 @@
 </head>
 <body class="m-0 p-0 bg-main">
     <form method="POST" th:action="@{'/add/' + ${currUser.username} + '/' + ${dayObj.day}}" th:object="${foodListObj}">
+
+        <!-- Nav Bar -->
         <nav class="navbar navbar-dark bg-dark text-white px-3 sticky-top">
             <div class="container-fluid">
                 <input type="hidden" th:field="${currUser.username}"></input>
                 <h4 class="h6 m-0 col-md-4" th:text="${currUser.username}"></h4>
-                <span class="col-md-4 d-flex justify-content-center" th:object="${dayObj}">
+                <span class="col-md-4 d-flex" th:object="${dayObj}">
                     <div class="nav-item dropdown">
                         <span class="nav-link dropdown-toggle float-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${dayObj.day}"></span>
                         <ul class="dropdown-menu"  >
-                            <li th:each=" entry : ${currUser.dayMap.descendingMap()}"><a class="dropdown-item" th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" th:text="${entry.key}"></a></li>
+                            <li th:each=" entry,iterStat : ${currUser.dayMap.descendingMap()}">
+                                <a class="dropdown-item" th:href="@{'/selectDay/'+ ${currUser.username}+ '/' +${entry.key}}" th:text="${entry.key}" th:if="${iterStat.index}<5"></a>
+                            </li>
+
+                            <li><a class="dropdown-item"  th:href="@{'/fullRecords/'+ ${currUser.username} + '/' + ${dayObj.day}}">Full Records</a></li>
                         </ul>
                     </div>
                 </span>
-                
-                <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
+                <div class="d-flex justify-content-end">
+                    <a href="/" class="text-decoration-none text-white h6 m-0 col-md-4 d-flex justify-content-end"> Logout </a>
+                </div>
             </div>
         </nav>
 
